@@ -1,0 +1,8 @@
+# Complete Sprint 4 - Project Scaffolding and Development Setup
+
+node_modules/
+.env
+dist/
+.vite/
+*.log
+npm-debug.log*

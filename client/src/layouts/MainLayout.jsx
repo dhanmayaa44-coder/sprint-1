@@ -5,17 +5,21 @@ import Footer from "../components/layout/Footer";
 function MainLayout({ children }) {
   return (
     <div className="main-layout">
+
       <Navbar />
 
       <div className="layout-body">
+
         <Sidebar />
 
         <main className="main-content">
           {children}
         </main>
+
       </div>
 
       <Footer />
+
     </div>
   );
 }

@@ -1,4 +1,7 @@
 import { useState } from "react";
+import PageTitle from "../../components/ui/PageTitle";
+import Button from "../../components/ui/Button";
+import Card from "../../components/ui/Card";
 
 function Attendance() {
   const [attendance, setAttendance] = useState([
@@ -33,39 +36,110 @@ function Attendance() {
     setAttendance([...attendance, newRecord]);
   };
 
+  const presentCount = attendance.filter(
+    (record) => record.status === "Present"
+  ).length;
+
+  const absentCount = attendance.filter(
+    (record) => record.status === "Absent"
+  ).length;
+
   return (
-    <div className="page">
-      <div className="page-header">
-        <div>
-          <h1>Attendance</h1>
-          <p>Track daily gym member attendance</p>
+    <div className="attendance-page">
+
+      {/* Header */}
+      <div className="attendance-header">
+        <PageTitle
+          title="Attendance"
+          description="Track and manage daily gym member attendance"
+        />
+
+        <Button onClick={markAttendance}>
+          + Mark Attendance
+        </Button>
+      </div>
+
+      {/* Attendance Summary */}
+      <div className="attendance-summary">
+
+        <Card
+          title="Total Records"
+          description="Today's attendance"
+        >
+          <div className="attendance-summary-value">
+            📋 {attendance.length}
+          </div>
+        </Card>
+
+        <Card
+          title="Present"
+          description="Members checked in"
+        >
+          <div className="attendance-summary-value present-value">
+            🟢 {presentCount}
+          </div>
+        </Card>
+
+        <Card
+          title="Absent"
+          description="Members not present"
+        >
+          <div className="attendance-summary-value absent-value">
+            🔴 {absentCount}
+          </div>
+        </Card>
+
+      </div>
+
+      {/* Attendance Records */}
+      <div className="attendance-section">
+
+        <div className="section-heading">
+          <div>
+            <h2>Today's Attendance</h2>
+            <p>Member check-in records</p>
+          </div>
         </div>
 
-        <button className="primary-btn" onClick={markAttendance}>
-          + Mark Attendance
-        </button>
-      </div>
+        <div className="attendance-list">
 
-      <div className="attendance-list">
-        {attendance.map((record) => (
-          <div className="attendance-card" key={record.id}>
-            <div>
-              <h3>{record.name}</h3>
-              <p>{record.date}</p>
-            </div>
-
-            <span
-              className={
-                record.status === "Present"
-                  ? "active-status"
-                  : "inactive-status"
-              }
+          {attendance.map((record) => (
+            <Card
+              key={record.id}
+              title={record.name}
+              description={`Date: ${record.date}`}
             >
-              {record.status}
-            </span>
-          </div>
-        ))}
+              <div className="attendance-record">
+
+                <div className="attendance-member">
+                  <div className="attendance-avatar">
+                    {record.name.charAt(0)}
+                  </div>
+
+                  <div>
+                    <strong>{record.name}</strong>
+                    <span>{record.date}</span>
+                  </div>
+                </div>
+
+                <span
+                  className={
+                    record.status === "Present"
+                      ? "active-status"
+                      : "inactive-status"
+                  }
+                >
+                  {record.status}
+                </span>
+
+              </div>
+            </Card>
+          ))}
+
+        </div>
+
       </div>
+
     </div>
   );
 }

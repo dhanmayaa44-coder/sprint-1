@@ -1,9 +1,22 @@
+import PageTitle from "../../components/ui/PageTitle";
+import Button from "../../components/ui/Button";
+import Card from "../../components/ui/Card";
+
 function Home() {
   return (
     <div className="home-page">
 
+      {/* Page Title */}
+      <PageTitle
+        title="Welcome to Smart Gym Management"
+        description="Manage your gym members, trainers, plans, attendance, and payments from one convenient platform."
+      />
+
+      {/* Hero Section */}
       <div className="home-hero">
+
         <div className="home-content">
+
           <span className="home-badge">
             💪 Gym Management System
           </span>
@@ -17,74 +30,92 @@ function Home() {
           <p>
             Our Gym Management System is a web-based application
             designed to make gym administration simple, organized,
-            and efficient. It helps gym administrators manage
-            members, trainers, membership plans, attendance, and
-            payments from one convenient platform.
+            and efficient.
           </p>
 
           <p>
-            With everything available in one place, gym staff can
-            easily keep track of daily activities, monitor member
-            information, manage subscriptions, and maintain payment
-            records.
+            It helps gym administrators manage members, trainers,
+            membership plans, attendance, and payments from one
+            convenient platform.
           </p>
 
           <div className="home-actions">
-            <a href="/dashboard" className="primary-btn">
-              📊 Go to Dashboard
-            </a>
 
-            <a href="/members" className="secondary-btn">
+            <Button
+              onClick={() => {
+                window.location.href = "/dashboard";
+              }}
+            >
+              📊 Go to Dashboard
+            </Button>
+
+            <Button
+              className="home-secondary-btn"
+              onClick={() => {
+                window.location.href = "/members";
+              }}
+            >
               👥 View Members
-            </a>
+            </Button>
+
           </div>
+
         </div>
 
         <div className="home-illustration">
+
           <div className="gym-circle">
             🏋️
           </div>
+
           <h3>Manage Your Gym</h3>
-          <p>Simple • Organized • Efficient</p>
+
+          <p>
+            Simple • Organized • Efficient
+          </p>
+
         </div>
+
       </div>
 
+      {/* Features */}
       <div className="home-features">
 
-        <div className="home-feature-card">
-          <div className="feature-icon">👥</div>
-          <h3>Member Management</h3>
-          <p>
-            Easily manage member details, membership plans,
-            and account status.
-          </p>
-        </div>
+        <Card
+          title="Member Management"
+          description="Easily manage member details, membership plans, and account status."
+        >
+          <div className="feature-icon">
+            👥
+          </div>
+        </Card>
 
-        <div className="home-feature-card">
-          <div className="feature-icon">🏋️</div>
-          <h3>Trainer Management</h3>
-          <p>
-            Keep track of trainers, their specialties,
-            and availability.
-          </p>
-        </div>
+        <Card
+          title="Trainer Management"
+          description="Keep track of trainers, their specialties, and availability."
+        >
+          <div className="feature-icon">
+            🏋️
+          </div>
+        </Card>
 
-        <div className="home-feature-card">
-          <div className="feature-icon">📅</div>
-          <h3>Attendance Tracking</h3>
-          <p>
-            Record and monitor daily attendance of gym members.
-          </p>
-        </div>
+        <Card
+          title="Attendance Tracking"
+          description="Record and monitor daily attendance of gym members."
+        >
+          <div className="feature-icon">
+            📅
+          </div>
+        </Card>
 
-        <div className="home-feature-card">
-          <div className="feature-icon">💰</div>
-          <h3>Payment Management</h3>
-          <p>
-            Manage membership payments and keep transaction
-            records organized.
-          </p>
-        </div>
+        <Card
+          title="Payment Management"
+          description="Manage membership payments and keep transaction records organized."
+        >
+          <div className="feature-icon">
+            💰
+          </div>
+        </Card>
 
       </div>
 

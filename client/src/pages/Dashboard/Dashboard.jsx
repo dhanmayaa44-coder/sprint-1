@@ -1,4 +1,7 @@
 import { useState } from "react";
+import PageTitle from "../../components/ui/PageTitle";
+import Button from "../../components/ui/Button";
+import Card from "../../components/ui/Card";
 
 function Dashboard() {
   const [stats, setStats] = useState({
@@ -19,69 +22,181 @@ function Dashboard() {
 
   return (
     <div className="dashboard-page">
-      <div className="dashboard-header">
+
+      {/* Welcome Section */}
+      <div className="dashboard-welcome">
         <div>
-          <h1>Dashboard</h1>
-          <p>Welcome back, Admin 👋</p>
+          <span className="welcome-label">
+            GYM MANAGEMENT SYSTEM
+          </span>
+
+          <h1>Welcome back, Admin 👋</h1>
+
+          <p>
+            Here's what's happening with your gym today.
+            Manage your members, trainers and payments easily.
+          </p>
         </div>
 
-        <button className="primary-btn" onClick={refreshStats}>
-          Refresh Data
-        </button>
+        <div className="welcome-icon">
+          🏋️
+        </div>
       </div>
 
+      {/* Page Header */}
+      <div className="dashboard-header">
+        <PageTitle
+          title="Dashboard Overview"
+          description="Monitor your gym activities and performance"
+        />
+
+        <Button onClick={refreshStats}>
+          🔄 Refresh Data
+        </Button>
+      </div>
+
+      {/* Statistics */}
       <div className="stats-grid">
 
-        <div className="stat-card">
-          <div className="stat-icon">👥</div>
-          <div>
-            <p>Total Members</p>
-            <h2>{stats.members}</h2>
-          </div>
-        </div>
+        <Card
+          title="Total Members"
+          description="Registered gym members"
+        >
+          <div className="stat-content">
+            <div className="stat-icon member-icon">
+              👥
+            </div>
 
-        <div className="stat-card">
-          <div className="stat-icon">🏋️</div>
-          <div>
-            <p>Total Trainers</p>
-            <h2>{stats.trainers}</h2>
+            <div>
+              <h2>{stats.members}</h2>
+              <span className="stat-change">
+                ↑ 12% this month
+              </span>
+            </div>
           </div>
-        </div>
+        </Card>
 
-        <div className="stat-card">
-          <div className="stat-icon">📅</div>
-          <div>
-            <p>Today's Attendance</p>
-            <h2>{stats.attendance}</h2>
-          </div>
-        </div>
+        <Card
+          title="Total Trainers"
+          description="Available gym trainers"
+        >
+          <div className="stat-content">
+            <div className="stat-icon trainer-icon">
+              🏋️
+            </div>
 
-        <div className="stat-card">
-          <div className="stat-icon">💰</div>
-          <div>
-            <p>Total Payments</p>
-            <h2>₹{stats.payments.toLocaleString()}</h2>
+            <div>
+              <h2>{stats.trainers}</h2>
+              <span className="stat-change">
+                ↑ 2 new trainers
+              </span>
+            </div>
           </div>
-        </div>
+        </Card>
+
+        <Card
+          title="Today's Attendance"
+          description="Members attended today"
+        >
+          <div className="stat-content">
+            <div className="stat-icon attendance-icon">
+              📅
+            </div>
+
+            <div>
+              <h2>{stats.attendance}</h2>
+              <span className="stat-change">
+                ↑ 8% from yesterday
+              </span>
+            </div>
+          </div>
+        </Card>
+
+        <Card
+          title="Total Payments"
+          description="Collected payments"
+        >
+          <div className="stat-content">
+            <div className="stat-icon payment-icon">
+              💰
+            </div>
+
+            <div>
+              <h2>₹{stats.payments.toLocaleString()}</h2>
+              <span className="stat-change">
+                ↑ 15% this month
+              </span>
+            </div>
+          </div>
+        </Card>
 
       </div>
 
-      <div className="dashboard-section">
-        <h2>Gym Overview</h2>
+      {/* Lower Section */}
+      <div className="dashboard-lower">
 
-        <div className="overview-card">
-          <div>
-            <h3>Membership Activity</h3>
-            <p>Most members are currently using Premium plans.</p>
+        {/* Membership Activity */}
+        <Card
+          title="Membership Activity"
+          description="Current membership performance"
+        >
+          <div className="activity-top">
+            <div>
+              <strong>78%</strong>
+              <span>Active Members</span>
+            </div>
+
+            <div className="activity-badge">
+              Healthy
+            </div>
           </div>
 
           <div className="progress-container">
             <div className="progress-bar"></div>
           </div>
 
-          <p>78% Active Members</p>
-        </div>
+          <div className="activity-info">
+            <span>94 Active</span>
+            <span>26 Inactive</span>
+          </div>
+        </Card>
+
+        {/* Quick Actions */}
+        <Card
+          title="Quick Actions"
+          description="Frequently used options"
+        >
+          <div className="quick-actions">
+
+            <Button
+              onClick={() => {
+                window.location.href = "/members";
+              }}
+            >
+              👥 Add Member
+            </Button>
+
+            <Button
+              onClick={() => {
+                window.location.href = "/attendance";
+              }}
+            >
+              📅 Mark Attendance
+            </Button>
+
+            <Button
+              onClick={() => {
+                window.location.href = "/payments";
+              }}
+            >
+              💰 Add Payment
+            </Button>
+
+          </div>
+        </Card>
+
       </div>
+
     </div>
   );
 }

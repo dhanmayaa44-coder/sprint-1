@@ -1,0 +1,82 @@
+/* =========================
+   MAIN APPLICATION LAYOUT
+========================= */
+
+.main-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.layout-body {
+  flex: 1;
+  display: flex;
+  min-width: 0;
+}
+
+.main-content {
+  flex: 1;
+  min-width: 0;
+  padding: 30px;
+  overflow-x: hidden;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar {
+  width: 100%;
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 0 30px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+  width: 250px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  padding: 25px 15px;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 55px;
+  padding: 15px 20px;
+  background: #ffffff;
+  border-top: 1px solid #e5e7eb;
+  color: #6b7280;
+  font-size: 13px;
+  text-align: center;
+}
+
+/* =========================
+   AUTH LAYOUT
+========================= */
+
+.auth-layout {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+}

@@ -22,13 +22,13 @@ function Navbar() {
       <div className="navbar-left">
         <div className="gym-logo">G</div>
 
-        <div>
+        <div className="navbar-brand">
           <h2>GYM</h2>
           <span>Management System</span>
         </div>
       </div>
 
-      {/* Main Navigation */}
+      {/* Navigation Links */}
       <div className="navbar-links">
         {navItems.map((item) => (
           <NavLink
@@ -45,7 +45,6 @@ function Navbar() {
           </NavLink>
         ))}
 
-        {/* Login */}
         <NavLink
           to="/login"
           className={({ isActive }) =>
@@ -64,7 +63,6 @@ function Navbar() {
         {/* Search */}
         <div className="search-box">
           <span>🔍</span>
-
           <input
             type="text"
             placeholder="Search..."
@@ -72,7 +70,10 @@ function Navbar() {
         </div>
 
         {/* Notification */}
-        <button className="notification-btn">
+        <button
+          className="notification-btn"
+          type="button"
+        >
           🔔
         </button>
 
@@ -81,6 +82,7 @@ function Navbar() {
 
           <button
             className="profile-btn"
+            type="button"
             onClick={() => setShowMenu(!showMenu)}
           >
             <div className="profile-avatar">
@@ -92,14 +94,16 @@ function Navbar() {
               <small>Administrator</small>
             </div>
 
-            <span>⌄</span>
+            <span className="profile-arrow">
+              {showMenu ? "⌃" : "⌄"}
+            </span>
           </button>
 
-          {/* Profile Dropdown */}
           {showMenu && (
             <div className="profile-menu">
 
               <button
+                type="button"
                 onClick={() => {
                   setShowMenu(false);
                   navigate("/profile");
@@ -109,6 +113,7 @@ function Navbar() {
               </button>
 
               <button
+                type="button"
                 onClick={() => {
                   alert("Settings coming soon!");
                   setShowMenu(false);
@@ -118,6 +123,7 @@ function Navbar() {
               </button>
 
               <button
+                type="button"
                 onClick={() => {
                   alert("Logged out successfully!");
                   setShowMenu(false);

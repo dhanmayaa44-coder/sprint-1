@@ -1,6 +1,6 @@
-function Card({ title, description, children }) {
+function Card({ title, description, children, className = "" }) {
   return (
-    <div className="ui-card">
+    <div className={`ui-card ${className}`}>
       {title && <h3>{title}</h3>}
 
       {description && (

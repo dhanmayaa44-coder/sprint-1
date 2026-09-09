@@ -13,8 +13,7 @@ function Sidebar() {
 
   return (
     <aside className="sidebar">
-
-      <div>
+      <div className="sidebar-main">
 
         <div className="sidebar-header">
           <div className="sidebar-logo">G</div>
@@ -29,7 +28,7 @@ function Sidebar() {
           MAIN MENU
         </div>
 
-        <nav>
+        <nav className="sidebar-nav">
           {menuItems.map((item) => (
             <NavLink
               key={item.name}
@@ -44,7 +43,9 @@ function Sidebar() {
                 {item.icon}
               </span>
 
-              <span>{item.name}</span>
+              <span className="sidebar-link-text">
+                {item.name}
+              </span>
             </NavLink>
           ))}
         </nav>
@@ -52,8 +53,10 @@ function Sidebar() {
       </div>
 
       <div className="sidebar-bottom">
+
         <div className="sidebar-help">
           <span>💡</span>
+
           <div>
             <strong>Need Help?</strong>
             <small>Contact administrator</small>
@@ -61,8 +64,8 @@ function Sidebar() {
         </div>
 
         <p>Logged in as Admin</p>
-      </div>
 
+      </div>
     </aside>
   );
 }

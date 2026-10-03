@@ -1,202 +1,123 @@
 import { useState } from "react";
+
 import PageTitle from "../../components/ui/PageTitle";
-import Button from "../../components/ui/Button";
 import Card from "../../components/ui/Card";
+import Button from "../../components/ui/Button";
+import WelcomeMessage from "../../components/ui/WelcomeMessage";
 
 function Dashboard() {
-  const [stats, setStats] = useState({
-    members: 120,
-    trainers: 8,
-    attendance: 86,
-    payments: 45000,
-  });
+  const [notificationCount, setNotificationCount] = useState(3);
+  const [showDetails, setShowDetails] = useState(true);
+  const [searchText, setSearchText] = useState("");
+  const [isGymOpen, setIsGymOpen] = useState(true);
 
-  const refreshStats = () => {
-    setStats({
-      members: stats.members + 1,
-      trainers: stats.trainers,
-      attendance: stats.attendance + 1,
-      payments: stats.payments + 1000,
-    });
-  };
+  const members = [
+    "Karma Wangchuk",
+    "Pema Dorji",
+    "Sonam Choden",
+    "Tashi Lhamo",
+  ];
+
+  const filteredMembers = members.filter((member) =>
+    member.toLowerCase().includes(searchText.toLowerCase())
+  );
 
   return (
-    <div className="dashboard-page">
+    <div>
+      <PageTitle
+        title="Dashboard"
+        description="Overview of your Gym Management System"
+      />
 
-      {/* Welcome Section */}
-      <div className="dashboard-welcome">
-        <div>
-          <span className="welcome-label">
-            GYM MANAGEMENT SYSTEM
-          </span>
+      <WelcomeMessage
+        userName="Admin"
+        role="Administrator"
+        gymName="FitLife Gym"
+      />
 
-          <h1>Welcome back, Admin 👋</h1>
+      {/* Notifications */}
+      <Card
+        title="Notifications"
+        description={`You currently have ${notificationCount} notification(s).`}
+      >
+        <Button
+          text="Clear Notifications"
+          onClick={() => setNotificationCount(0)}
+          disabled={notificationCount === 0}
+        />
+      </Card>
 
-          <p>
-            Here's what's happening with your gym today.
-            Manage your members, trainers and payments easily.
-          </p>
-        </div>
+      {/* Gym Status */}
+      <Card
+        title="Gym Status"
+        description={
+          isGymOpen
+            ? "The gym is currently open."
+            : "The gym is currently closed."
+        }
+      >
+        <span
+          className={
+            isGymOpen ? "active-status" : "inactive-status"
+          }
+        >
+          {isGymOpen ? "OPEN" : "CLOSED"}
+        </span>
 
-        <div className="welcome-icon">
-          🏋️
-        </div>
-      </div>
+        <br />
+        <br />
 
-      {/* Page Header */}
-      <div className="dashboard-header">
-        <PageTitle
-          title="Dashboard Overview"
-          description="Monitor your gym activities and performance"
+        <Button
+          text={isGymOpen ? "Close Gym" : "Open Gym"}
+          onClick={() => setIsGymOpen(!isGymOpen)}
+        />
+      </Card>
+
+      {/* Member Search */}
+      <Card
+        title="Search Members"
+        description="Type a name to search the member list."
+      >
+        <input
+          type="text"
+          className="dashboard-search"
+          placeholder="Search member..."
+          value={searchText}
+          onChange={(event) =>
+            setSearchText(event.target.value)
+          }
         />
 
-        <Button onClick={refreshStats}>
-          🔄 Refresh Data
-        </Button>
-      </div>
+        <div className="member-search-results">
+          {filteredMembers.length > 0 ? (
+            filteredMembers.map((member) => (
+              <p key={member}>👤 {member}</p>
+            ))
+          ) : (
+            <p>No member found.</p>
+          )}
+        </div>
+      </Card>
 
-      {/* Statistics */}
-      <div className="stats-grid">
+      {/* Today's Information */}
+      <Card
+        title="Today's Gym Information"
+        description="View or hide today's gym information."
+      >
+        <Button
+          text={showDetails ? "Hide Details" : "Show Details"}
+          onClick={() => setShowDetails(!showDetails)}
+        />
 
-        <Card
-          title="Total Members"
-          description="Registered gym members"
-        >
-          <div className="stat-content">
-            <div className="stat-icon member-icon">
-              👥
-            </div>
-
-            <div>
-              <h2>{stats.members}</h2>
-              <span className="stat-change">
-                ↑ 12% this month
-              </span>
-            </div>
+        {showDetails && (
+          <div className="dashboard-details">
+            <p>👥 Total Members: 120</p>
+            <p>🏋️ Active Trainers: 8</p>
+            <p>📅 Today's Attendance: 76</p>
+            <p>💰 Today's Payments: Nu. 15,500</p>
           </div>
-        </Card>
-
-        <Card
-          title="Total Trainers"
-          description="Available gym trainers"
-        >
-          <div className="stat-content">
-            <div className="stat-icon trainer-icon">
-              🏋️
-            </div>
-
-            <div>
-              <h2>{stats.trainers}</h2>
-              <span className="stat-change">
-                ↑ 2 new trainers
-              </span>
-            </div>
-          </div>
-        </Card>
-
-        <Card
-          title="Today's Attendance"
-          description="Members attended today"
-        >
-          <div className="stat-content">
-            <div className="stat-icon attendance-icon">
-              📅
-            </div>
-
-            <div>
-              <h2>{stats.attendance}</h2>
-              <span className="stat-change">
-                ↑ 8% from yesterday
-              </span>
-            </div>
-          </div>
-        </Card>
-
-        <Card
-          title="Total Payments"
-          description="Collected payments"
-        >
-          <div className="stat-content">
-            <div className="stat-icon payment-icon">
-              💰
-            </div>
-
-            <div>
-              <h2>₹{stats.payments.toLocaleString()}</h2>
-              <span className="stat-change">
-                ↑ 15% this month
-              </span>
-            </div>
-          </div>
-        </Card>
-
-      </div>
-
-      {/* Lower Section */}
-      <div className="dashboard-lower">
-
-        {/* Membership Activity */}
-        <Card
-          title="Membership Activity"
-          description="Current membership performance"
-        >
-          <div className="activity-top">
-            <div>
-              <strong>78%</strong>
-              <span>Active Members</span>
-            </div>
-
-            <div className="activity-badge">
-              Healthy
-            </div>
-          </div>
-
-          <div className="progress-container">
-            <div className="progress-bar"></div>
-          </div>
-
-          <div className="activity-info">
-            <span>94 Active</span>
-            <span>26 Inactive</span>
-          </div>
-        </Card>
-
-        {/* Quick Actions */}
-        <Card
-          title="Quick Actions"
-          description="Frequently used options"
-        >
-          <div className="quick-actions">
-
-            <Button
-              onClick={() => {
-                window.location.href = "/members";
-              }}
-            >
-              👥 Add Member
-            </Button>
-
-            <Button
-              onClick={() => {
-                window.location.href = "/attendance";
-              }}
-            >
-              📅 Mark Attendance
-            </Button>
-
-            <Button
-              onClick={() => {
-                window.location.href = "/payments";
-              }}
-            >
-              💰 Add Payment
-            </Button>
-
-          </div>
-        </Card>
-
-      </div>
-
+        )}
+      </Card>
     </div>
   );
 }

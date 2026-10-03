@@ -1,6 +1,11 @@
-function Card({ title, description, children, className = "" }) {
+function Card({
+  title,
+  description,
+  children,
+}) {
   return (
-    <div className={`ui-card ${className}`}>
+    <div className="ui-card">
+
       {title && <h3>{title}</h3>}
 
       {description && (
@@ -12,6 +17,7 @@ function Card({ title, description, children, className = "" }) {
       <div className="ui-card-content">
         {children}
       </div>
+
     </div>
   );
 }

@@ -1,14 +1,15 @@
 const express = require("express");
-const cors = require("cors");
-require("dotenv").config();
 
 const app = express();
 
-app.use(cors());
+// Middleware
 app.use(express.json());
 
+// Test route
 app.get("/", (req, res) => {
-  res.send("Gym Management System API is running");
+  res.json({
+    message: "Gym Management System Backend is running successfully!"
+  });
 });
 
 module.exports = app;

@@ -6,6 +6,7 @@ import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import Members from "../pages/Members/Members";
+import MemberForm from "../pages/Members/MemberForm";
 import Trainers from "../pages/Trainers/Trainers";
 import MembershipPlans from "../pages/MembershipPlans/MembershipPlans";
 import Attendance from "../pages/Attendance/Attendance";
@@ -49,6 +50,16 @@ function AppRoutes() {
         element={
           <MainLayout>
             <Members />
+          </MainLayout>
+        }
+      />
+
+      {/* Sprint 10 - Member Registration */}
+      <Route
+        path="/members/register"
+        element={
+          <MainLayout>
+            <MemberForm />
           </MainLayout>
         }
       />

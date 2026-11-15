@@ -1,97 +1,128 @@
-const members = [
-  {
-    id: "1",
-    name: "Rahul Sharma",
-    email: "rahul@gmail.com",
-    phone: "9876543210",
-    plan: "Premium",
-  },
-];
+
+const Member = require("../models/Member");
 
 // GET all members
-const getMembers = (req, res) => {
-  res.status(200).json({
-    message: "Members retrieved successfully",
-    count: members.length,
-    members,
-  });
+const getMembers = async (req, res) => {
+  try {
+    const members = await Member.find();
+
+    res.status(200).json({
+      message: "Members retrieved successfully",
+      count: members.length,
+      members,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 // GET one member by ID
-const getMemberById = (req, res) => {
-  const member = members.find((item) => item.id === req.params.id);
+const getMemberById = async (req, res) => {
+  try {
+    if (!Member.db.base.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: "Invalid member ID" });
+    }
 
-  if (!member) {
-    return res.status(404).json({ message: "Member not found" });
+    const member = await Member.findById(req.params.id);
+
+    if (!member) {
+      return res.status(404).json({ message: "Member not found" });
+    }
+
+    res.status(200).json({
+      message: "Member retrieved successfully",
+      member,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-
-  res.status(200).json({
-    message: "Member retrieved successfully",
-    member,
-  });
 };
 
 // POST: Create a member
-const createMember = (req, res) => {
-  const { name, email, phone, plan } = req.body;
+const createMember = async (req, res) => {
+  try {
+    const { name, email, phone, plan } = req.body;
 
-  if (!name || !email || !phone || !plan) {
-    return res.status(400).json({
-      message: "Please provide name, email, phone, and plan",
+    if (!name || !email || !phone) {
+      return res.status(400).json({
+        message: "Please provide name, email, and phone",
+      });
+    }
+
+    const newMember = await Member.create({
+      name,
+      email,
+      phone,
+      plan,
     });
+
+    res.status(201).json({
+      message: "Member created successfully",
+      member: newMember,
+    });
+  } catch (error) {
+    if (error.code === 11000) {
+      return res.status(409).json({ message: "Email already exists" });
+    }
+
+    if (error.name === "ValidationError") {
+      return res.status(400).json({ message: error.message });
+    }
+
+    res.status(500).json({ message: error.message });
   }
-
-  const newMember = {
-    id: String(Date.now()),
-    name,
-    email,
-    phone,
-    plan,
-  };
-
-  members.push(newMember);
-
-  res.status(201).json({
-    message: "Member created successfully",
-    member: newMember,
-  });
 };
 
 // PUT: Update a member
-const updateMember = (req, res) => {
-  const member = members.find((item) => item.id === req.params.id);
+const updateMember = async (req, res) => {
+  try {
+    if (!Member.db.base.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: "Invalid member ID" });
+    }
 
-  if (!member) {
-    return res.status(404).json({ message: "Member not found" });
+    const updatedMember = await Member.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedMember) {
+      return res.status(404).json({ message: "Member not found" });
+    }
+
+    res.status(200).json({
+      message: "Member updated successfully",
+      member: updatedMember,
+    });
+  } catch (error) {
+    if (error.name === "ValidationError") {
+      return res.status(400).json({ message: error.message });
+    }
+
+    res.status(500).json({ message: error.message });
   }
-
-  const { name, email, phone, plan } = req.body;
-
-  if (name !== undefined) member.name = name;
-  if (email !== undefined) member.email = email;
-  if (phone !== undefined) member.phone = phone;
-  if (plan !== undefined) member.plan = plan;
-
-  res.status(200).json({
-    message: "Member updated successfully",
-    member,
-  });
 };
 
 // DELETE: Delete a member
-const deleteMember = (req, res) => {
-  const index = members.findIndex((item) => item.id === req.params.id);
+const deleteMember = async (req, res) => {
+  try {
+    if (!Member.db.base.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: "Invalid member ID" });
+    }
 
-  if (index === -1) {
-    return res.status(404).json({ message: "Member not found" });
+    const deletedMember = await Member.findByIdAndDelete(req.params.id);
+
+    if (!deletedMember) {
+      return res.status(404).json({ message: "Member not found" });
+    }
+
+    res.status(200).json({
+      message: "Member deleted successfully",
+      member: deletedMember,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-
-  const deletedMember = members.splice(index, 1)[0];
-
-  res.status(200).json({
-    message: "Member deleted successfully",
-    member: deletedMember,
-  });
 };
 
 module.exports = {

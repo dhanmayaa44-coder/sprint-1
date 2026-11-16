@@ -1,8 +1,10 @@
+
 const express = require("express");
 const cors = require("cors");
 
 const requestLogger = require("./middleware/requestLogger");
 const memberRoutes = require("./routes/memberRoutes");
+const trainerRoutes = require("./routes/trainerRoutes");
 
 const app = express();
 
@@ -20,6 +22,9 @@ app.get("/", (req, res) => {
 
 // Member API routes
 app.use("/api/members", memberRoutes);
+
+// Trainer API routes
+app.use("/api/trainers", trainerRoutes);
 
 // Handle unknown routes
 app.use((req, res) => {

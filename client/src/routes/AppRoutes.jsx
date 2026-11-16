@@ -1,3 +1,4 @@
+
 import { Routes, Route } from "react-router-dom";
 
 import MainLayout from "../layouts/MainLayout";
@@ -8,6 +9,7 @@ import Dashboard from "../pages/Dashboard/Dashboard";
 import Members from "../pages/Members/Members";
 import MemberForm from "../pages/Members/MemberForm";
 import Trainers from "../pages/Trainers/Trainers";
+import TrainerForm from "../pages/Trainers/TrainerForm";
 import MembershipPlans from "../pages/MembershipPlans/MembershipPlans";
 import Attendance from "../pages/Attendance/Attendance";
 import Payments from "../pages/Payments/Payments";
@@ -54,7 +56,7 @@ function AppRoutes() {
         }
       />
 
-      {/* Sprint 10 - Member Registration */}
+      {/* Member Registration */}
       <Route
         path="/members/register"
         element={
@@ -70,6 +72,16 @@ function AppRoutes() {
         element={
           <MainLayout>
             <Trainers />
+          </MainLayout>
+        }
+      />
+
+      {/* Trainer Registration */}
+      <Route
+        path="/trainers/register"
+        element={
+          <MainLayout>
+            <TrainerForm />
           </MainLayout>
         }
       />

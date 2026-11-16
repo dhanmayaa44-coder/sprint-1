@@ -1,4 +1,6 @@
+
 import { useState } from "react";
+import axios from "axios";
 
 function MemberForm() {
   const [formData, setFormData] = useState({
@@ -11,6 +13,7 @@ function MemberForm() {
 
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,7 +36,7 @@ function MemberForm() {
 
     if (!formData.name.trim()) {
       newErrors.name = "Member name is required";
-    } else if (formData.name.length < 3) {
+    } else if (formData.name.trim().length < 3) {
       newErrors.name = "Name must contain at least 3 characters";
     }
 
@@ -62,7 +65,7 @@ function MemberForm() {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const validationErrors = validateForm();
@@ -73,8 +76,30 @@ function MemberForm() {
       return;
     }
 
-    setErrors({});
-    setSubmitted(true);
+    try {
+      setLoading(true);
+
+      await axios.post("http://localhost:5000/api/members", {
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        plan: formData.plan,
+      });
+
+      setErrors({});
+      setSubmitted(true);
+
+    } catch (error) {
+      setSubmitted(false);
+
+      alert(
+        error.response?.data?.message ||
+        "Unable to register member. Please try again."
+      );
+
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleReset = () => {
@@ -224,8 +249,9 @@ function MemberForm() {
             <button
               type="submit"
               className="register-button"
+              disabled={loading}
             >
-              Register Member
+              {loading ? "Registering..." : "Register Member"}
             </button>
 
             <button

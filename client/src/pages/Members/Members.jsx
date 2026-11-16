@@ -1,40 +1,46 @@
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 import PageTitle from "../../components/ui/PageTitle";
-import Button from "../../components/ui/Button";
 import Card from "../../components/ui/Card";
 
 function Members() {
-  const [members, setMembers] = useState([
-    {
-      id: 1,
-      name: "Rahul Sharma",
-      plan: "Premium",
-      status: "Active",
-    },
-    {
-      id: 2,
-      name: "Priya Das",
-      plan: "Standard",
-      status: "Active",
-    },
-    {
-      id: 3,
-      name: "Aman Kumar",
-      plan: "Basic",
-      status: "Inactive",
-    },
-  ]);
+  const [members, setMembers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const addMember = () => {
-    const newMember = {
-      id: members.length + 1,
-      name: `New Member ${members.length + 1}`,
-      plan: "Basic",
-      status: "Active",
-    };
+  const navigate = useNavigate();
 
-    setMembers([...members, newMember]);
+  // Fetch members from MongoDB
+  const fetchMembers = async () => {
+    try {
+      setLoading(true);
+
+      const response = await axios.get(
+        "http://localhost:5000/api/members"
+      );
+
+      setMembers(response.data.members || []);
+      setError("");
+
+    } catch (err) {
+      setError("Unable to load members. Please check the backend server.");
+    } finally {
+      setLoading(false);
+    }
   };
+
+  useEffect(() => {
+    fetchMembers();
+  }, []);
+
+  const activeMembers = members.length;
+
+  const premiumMembers = members.filter(
+    (member) => member.plan === "Premium"
+  ).length;
 
   return (
     <div className="members-page">
@@ -46,9 +52,12 @@ function Members() {
           description="View and manage all registered gym members"
         />
 
-        <Button onClick={addMember}>
+        <button
+          className="register-button"
+          onClick={() => navigate("/members/register")}
+        >
           + Add Member
-        </Button>
+        </button>
       </div>
 
       {/* Member Summary */}
@@ -65,12 +74,10 @@ function Members() {
 
         <Card
           title="Active Members"
-          description="Currently active"
+          description="Currently registered"
         >
           <div className="member-summary-value">
-            🟢 {members.filter(
-              (member) => member.status === "Active"
-            ).length}
+            🟢 {activeMembers}
           </div>
         </Card>
 
@@ -79,9 +86,7 @@ function Members() {
           description="Members with Premium plan"
         >
           <div className="member-summary-value">
-            ⭐ {members.filter(
-              (member) => member.plan === "Premium"
-            ).length}
+            ⭐ {premiumMembers}
           </div>
         </Card>
 
@@ -97,11 +102,19 @@ function Members() {
           </div>
         </div>
 
+        {loading && <p>Loading members...</p>}
+
+        {error && <p className="input-error">{error}</p>}
+
+        {!loading && !error && members.length === 0 && (
+          <p>No members registered yet.</p>
+        )}
+
         <div className="member-grid">
 
           {members.map((member) => (
             <Card
-              key={member.id}
+              key={member._id}
               title={member.name}
               description={`Membership Plan: ${member.plan}`}
             >
@@ -109,7 +122,7 @@ function Members() {
               <div className="member-card-content">
 
                 <div className="member-avatar">
-                  {member.name.charAt(0)}
+                  {member.name.charAt(0).toUpperCase()}
                 </div>
 
                 <div className="member-details">
@@ -118,14 +131,8 @@ function Members() {
                     {member.plan} Plan
                   </span>
 
-                  <span
-                    className={
-                      member.status === "Active"
-                        ? "active-status"
-                        : "inactive-status"
-                    }
-                  >
-                    {member.status}
+                  <span className="active-status">
+                    Registered
                   </span>
 
                 </div>
